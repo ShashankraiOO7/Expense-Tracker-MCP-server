@@ -5,7 +5,7 @@ import os
 mcp= FastMCP(name='ExpenserecordTracker')
 db_path=os.path.join(os.path.dirname(__file__),"kharcharecord.db")
 
-validate_path= os.path,join(os.path.dirname(__file__),'validation.json')
+validate_path= os.path.join(os.path.dirname(__file__),'validation.json')
 
 def init_db():
     with sqlite3.connect(db_path) as conn:
@@ -13,7 +13,7 @@ def init_db():
                     CREATE TABLE if not exists kharcha(
                         id integer primary key autoincrement,
                         date text not null,
-                        amount real not null,
+                        amount float not null,
                         category text not null,
                         subcategory text default '',
                         description text  
@@ -126,7 +126,7 @@ def generate_report(start_date: str, end_date: str) -> list[tuple]:
 
     return report
 
-@mcp.resource(validate_path=validate_path)
+@mcp.resource("expense://categories", mime_type="application/json")
 def expense_resource():
     """Resource for expense record validation."""
     with open(validate_path, 'r') as file:
